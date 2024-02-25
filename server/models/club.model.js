@@ -20,6 +20,10 @@ const clubSchema = new mongoose.Schema({
     clubAdmin : {
         type: String,
         required: true
+    },
+    clubImage : {
+        type: String,
+        required: true
     }
 }, { timestamps: true  });
 

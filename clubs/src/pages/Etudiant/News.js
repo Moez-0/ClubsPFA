@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaChartPie, FaCcDinersClub, FaSun, FaUserCircle, FaCalendar , FaAd ,FaBell} from 'react-icons/fa';
+import { FaChartPie, FaCcDinersClub, FaSun, FaUserCircle, FaCalendar , FaAd} from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -44,15 +44,13 @@ const getUserData = async (id) => {
 
 
 
-const StudentDashboard = () => {
+const News = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     axios.defaults.withCredentials = true;
     const [userId , setUserId] = useState(null);
     const [userData, setUserData] = useState(null);
-    const [notifications, setNotifications] = useState([]);
-
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -106,7 +104,6 @@ const StudentDashboard = () => {
             getUserData(userId).then((user) => {
                 setUser(user);
                 setUserData(user);
-                setNotifications(user.notifications);
   
             });
         }
@@ -126,7 +123,7 @@ const StudentDashboard = () => {
                     <Link to="/" className='mt-5 text-4xl font-bold text-ocean-blue-100'>Clubsy</Link>
                     <div className='Menulinks'>
                     <div className="profileSection flex flex-col items-center justify-center">
-                    <Link to="/student-dashboard" className="text-ocean-blue-100 flex items-center space-x-2 ">
+                    <Link to="/student-dashboard" className="text-white flex items-center space-x-2 ">
                         <FaUserCircle className="text-xl" />
                         <span>Profile</span>
                     </Link>
@@ -145,7 +142,7 @@ const StudentDashboard = () => {
                     </Link>
                 </div>
                 <div className="clubsSection flex flex-col items-center justify-center mt-5">
-                    <Link to="/student-dashboard/news" className="text-white flex items-center space-x-2">
+                    <Link to="/student-dashboard/news" className="text-ocean-blue-100 flex items-center space-x-2">
                         <FaAd className="text-xl" />
                         <span>News</span>
                     </Link>
@@ -166,49 +163,20 @@ const StudentDashboard = () => {
                             <button className='text-3xl text-ocean-blue-100' onClick={handleLogout}>Logout</button>
                         </div>
                         <div className='flex items-center space-x-2 mr-5'>
-                            
                             <Link to="/profile" className='text-3xl text-ocean-blue-100'>{user.userName}</Link>
                             <FaUserCircle className='text-3xl text-ocean-blue-100' />
-                        </div>
-                        {/* //notifications bell */}
-                        <div className='flex items-center space-x-2'>
-                            <Link to="/student-dashboard/notifications" className='text-3xl text-ocean-blue-100'>
-                            <FaBell className='text-3xl text-ocean-blue-100' /></Link>
-                            <span className='text-3xl text-ocean-blue-100'>{notifications.length}</span>
-                            
                         </div>
 
                         
 
                     </div>
                     <div className='mainContent h-[80%] md:h-full'>
-                      {/* Create edit profile form with placeholders as current user details  */}
-                      <form className="flex flex-col items-center justify-center h-full mt-10">
+                        {/* placeholders for news feed */}
+                        <div className="flex flex-col items-center justify-center h-full">
+                            <h1 className="text-4xl font-bold text-ocean-blue-100">News</h1>
+                            <p className="text-2xl text-ocean-blue-100">No news to display</p>
 
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="id">Identity Card</label>
-                            <input type="text" id="id" name="id" placeholder={userData?.identityCard} readOnly className="border-2 rounded-md p-2" />
                         </div>
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="username">Username</label>
-                            <input type="text" id="username" name="username" placeholder={userData?.userName} readOnly className="border-2 rounded-md p-2" />
-                        </div>
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="phoneNumber">Phone Number</label>
-                            <input type="text" id="phoneNumber" name="phoneNumber" placeholder={userData?.phoneNumber} className="border-2 rounded-md p-2" />
-                        </div>
-
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Enter new password" className="border-2 rounded-md p-2" />
-                        </div>
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder={userData?.email} className="border-2 rounded-md p-2" />
-                        </div>
-                        <button type="submit" className="bg-ocean-blue-100 text-white rounded-md p-2 mt-10 hover:bg-ocean-blue-500">Update Profile</button>
-                    </form>
-                      
                     </div>
 
 
@@ -222,4 +190,4 @@ const StudentDashboard = () => {
 
 
 
-export default StudentDashboard;
+export default News;

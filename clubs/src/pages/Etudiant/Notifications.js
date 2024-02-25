@@ -44,7 +44,7 @@ const getUserData = async (id) => {
 
 
 
-const StudentDashboard = () => {
+const Notifications = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -172,54 +172,37 @@ const StudentDashboard = () => {
                         </div>
                         {/* //notifications bell */}
                         <div className='flex items-center space-x-2'>
-                            <Link to="/student-dashboard/notifications" className='text-3xl text-ocean-blue-100'>
-                            <FaBell className='text-3xl text-ocean-blue-100' /></Link>
+                            <FaBell className='text-3xl text-ocean-blue-100' />
                             <span className='text-3xl text-ocean-blue-100'>{notifications.length}</span>
-                            
+
                         </div>
 
                         
 
                     </div>
                     <div className='mainContent h-[80%] md:h-full'>
-                      {/* Create edit profile form with placeholders as current user details  */}
-                      <form className="flex flex-col items-center justify-center h-full mt-10">
-
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="id">Identity Card</label>
-                            <input type="text" id="id" name="id" placeholder={userData?.identityCard} readOnly className="border-2 rounded-md p-2" />
-                        </div>
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="username">Username</label>
-                            <input type="text" id="username" name="username" placeholder={userData?.userName} readOnly className="border-2 rounded-md p-2" />
-                        </div>
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="phoneNumber">Phone Number</label>
-                            <input type="text" id="phoneNumber" name="phoneNumber" placeholder={userData?.phoneNumber} className="border-2 rounded-md p-2" />
-                        </div>
-
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Enter new password" className="border-2 rounded-md p-2" />
-                        </div>
-                        <div className="flex flex-col items-center justify-center">
-                            <label htmlFor="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder={userData?.email} className="border-2 rounded-md p-2" />
-                        </div>
-                        <button type="submit" className="bg-ocean-blue-100 text-white rounded-md p-2 mt-10 hover:bg-ocean-blue-500">Update Profile</button>
-                    </form>
                       
+                      <form className="flex flex-col items-center justify-center h-full mt-10">
+                        
+                        {/* Notifications array has objects with message and error ( type ) */}
+                        {notifications.length > 0 ? (
+                            notifications.map((notification, index) => (
+                                <div key={index} className="flex flex-col items-center justify-center mt-5">
+                                    <p className={`text-2xl ${notification.type === 'error' ? 'text-red-500' : 'text-green-500'}`}>{notification.message}</p>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-2xl text-ocean-blue-100">No notifications to display</p>
+                        )}
+
+                        <button className="mt-5 bg-ocean-blue-100 text-white px-5 py-2 rounded-md" >Clear Notifications</button>
+                    </form>
+                    
                     </div>
-
-
-               
                 </div>
             </div>
         </div>
     )
 }
 
-
-
-
-export default StudentDashboard;
+export default Notifications;

@@ -3,36 +3,59 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 
-const menuLinks = [
-    {
-        title: 'About us',
-        link: '/about'
-    },
-    {
-        title:'Check out existing clubs',
-        link: '/clubs'
-    },
-    {
-        title: 'Sign up to join or create a new club',
-        link: '/signup'
-    },
-    {
-        title: 'Log in',
-        link: '/login'
-    }
-
-
-
-];
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [ menuLinks, setMenuLinks] = useState([
+        {
+            title: 'About us',
+            link: '/about'
+        },
+        {
+            title:'Check out existing clubs',
+            link: '/clubs'
+        },
+        {
+            title: 'Sign up to join or create a new club',
+            link: '/signup'
+        },
+        {
+            title: 'Log in',
+            link: '/login'
+        }
+    ]);
+
+
 
     const handleMenu = () => {
         setOpen((prev) => !prev);
     };
-    //change when authenticated
-
+    //change links if authenticated
+    if (isAuthenticated) {
+        setMenuLinks([
+            {
+                title: 'Home',
+                link: '/',
+            },
+            {
+                title: 'Clubs',
+                link: '/clubs',
+            },
+            {
+                title: 'Events',
+                link: '/events',
+            },
+            {
+                title: 'Profile',
+                link: '/profile',
+            },
+            {
+                title: 'Settings',
+                link: '/settings',
+            },
+        ]);
+    }
 
     return (
         <div className='  h-20 w-full flex bg-teeth justify-between items-center shadow-md fixed top-0 left-0 z-10'>

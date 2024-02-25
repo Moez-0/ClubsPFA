@@ -13,6 +13,7 @@ router.post('/login',login);
 const verifyUser = async (req, res, next) => {
     try {
         const cookieHeader = req.headers.cookie;
+        console.log(cookieHeader);
 
         if (!cookieHeader) {
             return res.json({ success: false, message: 'User not authenticated' });

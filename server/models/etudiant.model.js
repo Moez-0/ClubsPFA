@@ -33,8 +33,11 @@ const etudiantSchema = new mongoose.Schema({
     accountType : {
         type: String,
         required: true
+    },
+    notifications : {
+        type: Array,
+        required: false
     }
-
 }, { timestamps: true  });
 
 

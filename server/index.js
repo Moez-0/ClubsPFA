@@ -3,7 +3,9 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
-
+import clubRoutes from './routes/club.route.js';
+import adminRoutes from './routes/admin.route.js';
+import clubCreationRoutes from './routes/clubCreation.route.js';
 
 dotenv.config();
 
@@ -25,7 +27,9 @@ app.use(express.json());
 
 app.use("/api/user", userRoutes);;
 app.use("/api/auth", authRoutes);
-
+app.use("/api/club", clubRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/clubCreation", clubCreationRoutes);
 
 
 app.use((err, req, res, next) => {

@@ -1,16 +1,19 @@
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
 
 const Layout = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+
   return (
-    <>
-      <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} user={user} setUser={setUser} />
+    <div className="layout">
+      <Navbar  />
 
       <Outlet />
-    </>
+      </div>
   )
 };
 

@@ -8,14 +8,19 @@ import Signup from "./pages/Signup";
 import Clubs from "./pages/Clubs";
 import About from "./pages/About";
 import StudentDashboard from "./pages/StudentDashboard";
-import ClubOwnerDashboard from "./pages/ClubOwnerDashboard";
 
-import { store } from './redux/store.js';
-import { Provider } from 'react-redux';
-import { PersistGate } from "redux-persist/integration/react";
-import { persistor } from './redux/store.js';
-
-
+import ClubsList from "./pages/ClubsList.js";
+import AdminLogin from "./pages/Admin/AdminLogin.js";
+import AdminHome from "./pages/Admin/AdminHome.js";
+import ClubDashboard, {CLubDashboard} from './pages/ResponsableClub/ClubDashboard';
+import StudentList from "./pages/Admin/StudentsList.js";
+import ClubCreationRequests from "./pages/Admin/ClubCreationRequests.js";
+import AdminClubsList from "./pages/Admin/AdminClubsList.js";
+import AddClub from "./pages/Admin/AddClub.js";
+import CreateClubApplication from "./pages/Etudiant/CreateClubApplication.js";
+import News from "./pages/Etudiant/News.js";
+import Events from "./pages/Etudiant/Events.js";
+import Notifications from "./pages/Etudiant/Notifications.js";
 
 export default function App() {
 
@@ -29,10 +34,22 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="clubs" element={<Clubs />} />
+          <Route path="student-dashboard/clubs" element={<ClubsList />} />
           <Route path="signup" element={<Signup />} />
           <Route path="login" element={<Login />} />
-          <Route path="student-dashboard" element={<StudentDashboard />} />
-          <Route path="club-dashboard" element={<ClubOwnerDashboard />} />
+          <Route path="admin/login" element={<AdminLogin />} />
+          <Route path="admin/admin-dashboard" element={<AdminHome />} />
+          <Route path="admin/admin-dashboard/students" element={<StudentList />} />
+          <Route path="admin/admin-dashboard/clubs" element={<AdminClubsList />} />
+          <Route path="admin/admin-dashboard/club-creation-requests" element={<ClubCreationRequests />} />
+          <Route path="admin-dashboard/add-club" element={<AddClub />} />
+          <Route path="student-dashboard" element={<StudentDashboard /> } />
+          <Route path="student-dashboard/news" element={<News />} />
+          <Route path="student-dashboard/events" element={<Events />} />
+          <Route path="student-dashboard/create-club-application" element={<CreateClubApplication />} />
+          <Route path="student-dashboard/notifications" element={<Notifications />} />
+          <Route path="club-dashboard" element={<ClubDashboard   />} />
+
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

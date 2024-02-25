@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaChartPie, FaCcDinersClub, FaSun, FaUserCircle, FaCalendar , FaAd} from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate ,useHistory  } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -51,27 +51,27 @@ const ClubsList = () => {
     axios.defaults.withCredentials = true;
     const [userId , setUserId] = useState(null);
     const [userData, setUserData] = useState(null);
+    const [userClubs, setUserClubs] = useState([]);
+    const [userEvents, setUserEvents] = useState([]);
+    const [userClubsIds, setUserClubsIds] = useState([]);
+
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const response = await axios.get('/api/auth/verify');
-
                 if (response.data.success) {
                     setIsAuthenticated(true);
-                    
-                }else{
-                    navigate("/404", { replace: true } , { state: { message: "You need to be logged in to access this page" } } , { message: "You need to be logged in to access this page" });
+                } else {
+                    navigate(-1);
 
                 }
-            }
-            catch (error) {
+            } catch (error) {
                 console.log(error);
             }
-        }
+        };
         fetchUser();
-    }, []);
-   
+    }, [navigate]);
 
     const handleLogout = async () => {
         try {
@@ -104,17 +104,28 @@ const ClubsList = () => {
             getUserData(userId).then((user) => {
                 setUser(user);
                 setUserData(user);
+                setUserClubsIds(user.clubs);
+                console.log(user.clubs);
   
             });
         }
     }
     , [userId]);
 
-    
+    useEffect(() => {
+        if (userClubsIds.length > 0) {
+            userClubsIds.forEach((clubId) => {
+                axios.get(`/api/club/clubs/${clubId}`).then((response) => {
+                    setUserClubs((userClubs) => [...userClubs, response.data.club]);
+                });
+            });
+        }
+    }
+    , [userClubsIds]);
 
-     
-     
-  
+
+
+
     return (
 
         <div className="h-screen w-full mt-20">
@@ -123,32 +134,32 @@ const ClubsList = () => {
                     <Link to="/" className='mt-5 text-4xl font-bold text-ocean-blue-100'>Clubsy</Link>
                     <div className='Menulinks'>
                     <div className="profileSection flex flex-col items-center justify-center">
-                    <Link to="/profile" className="text-ocean-blue-100 flex items-center space-x-2 ">
+                    <Link to="/student-dashboard" className="text-white flex items-center space-x-2 ">
                         <FaUserCircle className="text-xl" />
                         <span>Profile</span>
                     </Link>
                 </div>
                 <div className="clubsSection flex flex-col items-center justify-center mt-5">
-                    <Link to="/clubs" className="text-white flex items-center space-x-2">
+                    <Link to="/clubs" className="text-ocean-blue-100 flex items-center space-x-2">
                         <FaCcDinersClub className="text-xl" />
                         <span>Clubs</span>
                     </Link>
                 </div>
 
                 <div className="clubsSection flex flex-col items-center justify-center mt-5">
-                    <Link to="/clubs" className="text-white flex items-center space-x-2">
+                    <Link to="/student-dashboard/create-club-application" className="text-white flex items-center space-x-2">
                         <FaCcDinersClub className="text-xl" />
                         <span>Club Create Application</span>
                     </Link>
                 </div>
                 <div className="clubsSection flex flex-col items-center justify-center mt-5">
-                    <Link to="/clubs" className="text-white flex items-center space-x-2">
+                    <Link to="/student-dashboard/news" className="text-white flex items-center space-x-2">
                         <FaAd className="text-xl" />
                         <span>News</span>
                     </Link>
                 </div>
                 <div className="clubsSection flex flex-col items-center justify-center mt-5">
-                    <Link to="/clubs" className="text-white flex items-center space-x-2">
+                    <Link to="/student-dashboard/events" className="text-white flex items-center space-x-2">
                         <FaCalendar className="text-xl" />
                         <span>Events</span>
                     </Link>
@@ -170,24 +181,33 @@ const ClubsList = () => {
                         
 
                     </div>
-                    <div className='mainContent h-[80%] md:h-full'>
-                        <h1 className='text-4xl m-5'>Welcome {user.userName}</h1>
+                    <div className='flex items-center justify-center h-20 bg-teeth shadow-md'>
+                        <h1 className='text-3xl text-ocean-blue-100'>Your Clubs</h1>
 
-                         <h1 className='text-4xl m-5'>Email: {user.email}</h1> 
-                        <h1 className='text-4xl m-5'>Grade: {user.grade}</h1>
-                        <h1 className='text-4xl m-5'>Identity Card: {user.identityCard}</h1>
-                        <h1 className='text-4xl m-5'>Phone Number: {user.phoneNumber}</h1>
                     </div>
+                    <div className='flex flex-col items-center justify-center'>
+                       {/* Liste of clubs found as a grid with club name description image and join button*/}
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4'>
 
+                {userClubs.map((club) => (
+                    <div className='bg-white p-4 rounded-md shadow-md'>
+                        <h2 className='text-2xl font-bold'>{club.clubName}</h2>
+                        <p className='text-lg hidden'>{club.clubDescription}</p>
+                        <img className='w-full h-60' src={club.clubImage} alt="club1" />
+                        <Link to={`/club/${club._id}`} className='w-full h-10 m-2 p-2 bg-indigo-950 text-white rounded-md'>View</Link>
+                    </div>
+                ))}
 
-               
+            
+             </div>
+        
+
+                    </div>
                 </div>
             </div>
         </div>
     )
 }
-
-
 
 
 export default ClubsList;
