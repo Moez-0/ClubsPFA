@@ -105,3 +105,23 @@ export const joinClub = async (req, res, next) => {
 }
 
 
+
+//delete user notifications
+export const deleteNotifications = async (req, res, next) => {
+    const { id } = req.params;
+    console.log(id);
+    try {
+        const user
+        = await
+        User.findById(id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        user.notifications = [];
+        await user.save();
+        res.status(200).json({ success: true, user });
+    }
+    catch (error) {
+        next(error);
+    }
+}

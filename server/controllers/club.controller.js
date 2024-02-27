@@ -101,6 +101,7 @@ export const getClubByAdmin = async (req, res, next) => {
 //get club by name
 export const getClubByName = async (req, res, next) => {
     const { clubName } = req.params;
+
     try {
         const club = await Club.find({
             clubName: {
@@ -136,6 +137,7 @@ export const addMember = async (req, res, next) => {
         next(error);
     }
 }
+
 
 
 

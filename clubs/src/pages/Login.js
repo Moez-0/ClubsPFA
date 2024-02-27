@@ -1,18 +1,48 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+
+
+const isAdmin = (userId,array) => {
+   for (let i = 0; i < array.length; i++) {
+      if (array[i].clubAdmin === userId) {
+         return true;
+      }
+   }
+    return false;
+}
 
 const Login = () => {
     const [formData, setFormData] = useState({});
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [allClubs, setAllClubs] = useState([]);
+  const [userid , setUserId] = useState('');
   
   
     const handleChange = (e) => {
       setFormData({...formData, [e.target.name]: e.target.value})
   
     }
+        //get all clubs 
+        useEffect(() => {
+          const fetchClubs = async () => {
+              try {
+                  const response = await axios.get('/api/club/clubs');
+    
+                  if (response.data.success) {
+                      setAllClubs(response.data.clubs);
+    
+                  }
+              } catch (error) {
+                  console.error(error);
+              }
+          };
+    
+          fetchClubs();
+      }, [navigate]);
     const handleSubmit = async (e) => {
   
       e.preventDefault();
@@ -29,11 +59,20 @@ const Login = () => {
         setLoading(false);
         // console.log(data);
         if (data.success === false){
+          
           setError(data.message);
           return;
         }
+
+        if(isAdmin(data.userId,allClubs)){
+          setError(false);
+
+          navigate('/club-dashboard');
+        }else{
+
         setError(false);
         navigate('/student-dashboard');
+      }
         // console.log(data);
       }
       catch (error) {
@@ -42,6 +81,7 @@ const Login = () => {
       }
     }
  
+
 
   return (
     <div key={2}>

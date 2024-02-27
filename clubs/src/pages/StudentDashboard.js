@@ -122,8 +122,8 @@ const StudentDashboard = () => {
 
         <div className="h-full w-full mt-20">
             <div className='studentDash w-full flex flex-col md:flex-row h-full'>
-                <div className='leftMenu  dark:bg-darky px-5 h-[20%] md:h-screen  md:h-full md:w-[20%] flex flex-col justify-evenly items-center'>
-                    <Link to="/" className='mt-5 text-4xl font-bold text-ocean-blue-100'>Clubsy</Link>
+                <div className='leftMenu md:h-full dark:bg-darky px-5 h-[20%]  md:w-[20%] md:h-screen flex flex-col justify-evenly items-center'>
+                    <Link to="/student-dashboard/" className='mt-5 text-4xl font-bold text-ocean-blue-100'>Clubsy</Link>
                     <div className='Menulinks'>
                     <div className="profileSection flex flex-col items-center justify-center">
                     <Link to="/student-dashboard" className="text-ocean-blue-100 flex items-center space-x-2 ">

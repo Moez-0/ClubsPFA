@@ -113,6 +113,18 @@ const Notifications = () => {
     }
     , [userId]);
 
+    const handleClearNotifications = async () => {
+        try {
+            const response = await axios.put(`/api/user/notifications/${userId}`);
+            if (response.data.success) {
+                setNotifications([]);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
 
 
      
@@ -123,7 +135,7 @@ const Notifications = () => {
         <div className="h-full w-full mt-20">
             <div className='studentDash w-full flex flex-col md:flex-row h-full'>
                 <div className='leftMenu  dark:bg-darky px-5 h-[20%] md:h-screen  md:h-full md:w-[20%] flex flex-col justify-evenly items-center'>
-                    <Link to="/" className='mt-5 text-4xl font-bold text-ocean-blue-100'>Clubsy</Link>
+                    <Link to="/student-dashboard/" className='mt-5 text-4xl font-bold text-ocean-blue-100'>Clubsy</Link>
                     <div className='Menulinks'>
                     <div className="profileSection flex flex-col items-center justify-center">
                     <Link to="/student-dashboard" className="text-ocean-blue-100 flex items-center space-x-2 ">
@@ -182,7 +194,7 @@ const Notifications = () => {
                     </div>
                     <div className='mainContent h-[80%] md:h-full'>
                       
-                      <form className="flex flex-col items-center justify-center h-full mt-10">
+                      <div className="flex flex-col items-center justify-center h-full mt-10">
                         
                         {/* Notifications array has objects with message and error ( type ) */}
                         {notifications.length > 0 ? (
@@ -195,8 +207,8 @@ const Notifications = () => {
                             <p className="text-2xl text-ocean-blue-100">No notifications to display</p>
                         )}
 
-                        <button className="mt-5 bg-ocean-blue-100 text-white px-5 py-2 rounded-md" >Clear Notifications</button>
-                    </form>
+                        <button className="mt-5 bg-ocean-blue-100 text-white px-5 py-2 rounded-md" onClick={handleClearNotifications} >Clear Notifications</button>
+                    </div>
                     
                     </div>
                 </div>

@@ -140,7 +140,7 @@ const ClubCreationRequests = () => {
         <div className="h-full w-full mt-20">
             <div className='studentDash w-full flex flex-col md:flex-row h-full'>
                 <div className='leftMenu  dark:bg-darky px-5 h-[20%] md:h-screen  md:h-full md:w-[20%] flex flex-col justify-evenly items-center'>
-                    <Link to="/" className='mt-5 text-4xl font-bold text-ocean-blue-100'>Clubsy</Link>
+                    <Link to="/admin/admin-dashboard/" className='mt-5 text-4xl font-bold text-ocean-blue-100'>Clubsy</Link>
                     <div className='Menulinks h-full flex flex-col justify-center'>
 
                     {/* Admin links  */}
