@@ -134,6 +134,15 @@ const ClubCreationRequests = () => {
 
 
 
+    const handleClear = async () => {
+        try {
+            const response = await axios.delete('/api/clubCreation/clear');
+            console.log(response.data);
+            setAllRequests([]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
 
@@ -157,7 +166,7 @@ const ClubCreationRequests = () => {
                     </Link>
                     </div>
                     <div className="adminSection flex flex-col items-center justify-center my-5">
-                    <Link to="/admin-dashboard/clubs" className="text-white flex items-center space-x-2 ">
+                    <Link to="/admin/admin-dashboard/finance" className="text-white flex items-center space-x-2 ">
                         <FaAddressCard className="text-xl" />
                         <span>Request Finanical Report</span>
                     </Link>
@@ -255,6 +264,7 @@ const ClubCreationRequests = () => {
                 ))}
             </tbody>
         </table>
+        <button onClick={handleClear} className='bg-red-500 text-white p-2 rounded-md mx-10'>Clear Requests</button>
     </div>
 ) : (
     <div className='flex items-center justify-center h-full'>

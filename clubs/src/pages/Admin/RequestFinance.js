@@ -30,33 +30,16 @@ const getAdminData = async (id) => {
 
 
 
-const AddClub = () => {
+const RequestFinance = () => {
     const navigate = useNavigate();
     const [admin, setAdmin] = useState({});
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     axios.defaults.withCredentials = true;
     const [adminId , setAdminId] = useState(null);
     const [adminData, setAdminData] = useState(null);
-    const [allStudents, setAllStudents] = useState([]);
+    const [allClubs, setAllClubs] = useState([]);
     const [formData, setFormData] = useState({});
     const [error , setError] = useState(null);
-
-    const handleChange = (e) => {
-        if (e.target.name === 'clubImage') {
-
-            setFormData({ ...formData, clubImage: '/images/'.concat(e.target.files[0]["name"]) });
-        }else{
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
-    }
-
-    const validateForm = () => {
-        if (!formData.clubName || !formData.clubDescription || !formData.clubAdmin || !formData.clubImage) {
-            setError('All fields are required');
-            return false;
-        }
-        return true;
-    }
 
 
     useEffect(() => {
@@ -121,42 +104,41 @@ const AddClub = () => {
 
     
 
-useEffect(() => {
-    const fetchStudents = async () => {
-        try {
-            const response = await axios.get('/api/user/all');
 
-            setAllStudents(response.data.users);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    fetchStudents();
-}, []);
-
-const handleSubmit = async (e) => {
-    if (!validateForm()) {
-        e.preventDefault();
-        return;
-    }
-
-    e.preventDefault();
-    try {
-        console.log(formData);
-        const response = await axios.post('/api/club/create-club', formData);
-
-        if (response.data.success) {
-            navigate('/admin/admin-dashboard/clubs');
-        }else{
-            setError(response.data.message);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
+    //fetch all clubs
     
-    
+    useEffect(() => {
+        const fetchClubs = async () => {
+            try {
+                const response = await axios.get('/api/club/clubs');
+                setAllClubs(response.data.clubs);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchClubs();
+    }
+    , []);
+
   
+    const handleFormChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.put(`/api/club/clubs/send-notification/${formData.club}`, { notification: 'Request for financial report' });
+            if (response.data.success) {
+                navigate('/admin/admin-dashboard');
+                console.log('Request sent');
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
 
     return (
 
@@ -180,7 +162,7 @@ const handleSubmit = async (e) => {
                     </Link>
                     </div>
                     <div className="adminSection flex flex-col items-center justify-center my-5">
-                    <Link to="/admin/admin-dashboard/finance" className="text-white flex items-center space-x-2 ">
+                    <Link to="/admin-dashboard/clubs" className="text-ocean-blue-100  flex items-center space-x-2 ">
                         <FaAddressCard className="text-xl" />
                         <span>Request Finanical Report</span>
                     </Link>
@@ -193,7 +175,7 @@ const handleSubmit = async (e) => {
                   </div>
 
                     <div className="adminSection flex flex-col items-center justify-center my-5">
-                    <Link to="/admin-dashboard/add-club" className="text-ocean-blue-100 flex items-center space-x-2 ">
+                    <Link to="/admin-dashboard/add-club" className="text-white flex items-center space-x-2 ">
                         <FaAddressCard className="text-xl" />
                         <span>Add club</span>
                     </Link>
@@ -234,37 +216,26 @@ const handleSubmit = async (e) => {
 
                     </div>
                     <div className='mainContent h-[80%] md:h-full'>
-                        {/* Form to add a club  */}
-                        <form className="flex flex-col items-center justify-center h-full mt-10" onSubmit={handleSubmit}>
-                            <h1 className="text-4xl font-bold text-ocean-blue-100">Add a club</h1>
-                            <div className="flex flex-col items-center justify-center w-full mt-5">
-                                {/* Modern input design */}
-                                <label htmlFor="clubName" className="text-2xl text-ocean-blue-100">Club Name</label>
-                                <input type="text" name="clubName" id="clubName" className="w-1/2 h-10 border-2  rounded-md px-5 mt-2" onChange={handleChange}/>
-
-                            </div>
-                            <div className="flex flex-col items-center justify-center w-full mt-5">
-                                <label htmlFor="clubDescription" className="text-2xl text-ocean-blue-100">Club Description</label>
-                                <textarea name="clubDescription" id="clubDescription" className="w-1/2 h-32 border-2 rounded-md px-5 mt-2" onChange={handleChange}/>
-                            </div>
-                            <div className="flex flex-col items-center justify-center w-full mt-5">
-                                <select name='clubAdmin' id='clubAdmin' className="w-1/2 h-10 border-2 rounded-md px-5 mt-2" onChange={handleChange}>
-                                    <option value=''>Select Club President</option>
-                                    {allStudents.map((student) => {
-                                        return <option value={student._id}>{student.identityCard} {student.email} {student.grade} {student.phoneNumber}</option>
-                                    })}
-                                </select>
-
-                            </div>
-    
-                            <div className="flex flex-col items-center justify-center w-full mt-5">
-                                <label htmlFor="clubLogo" className="text-2xl text-ocean-blue-100">Club Logo</label>
-                                <input type="file" name="clubImage" id="clubLogo" className="w-1/2 h-10 border-2rounded-md px-5 mt-2" onChange={handleChange}/>
-                            </div>
-                            {error && <p className="text-red-500 text-2xl mt-5">{error}</p>
+                        {/* Form to select club and send request */}
+                        <form className="flex flex-col items-center justify-center h-full mt-10" onSubmit={handleFormSubmit}>
+                            { allClubs.length > 0 ? (
+                                <div className='flex flex-col items-center justify-center h-full'>
+                                    <div className="flex flex-col items-center justify-center space-y-5">
+                                        <label htmlFor="club">Select a club</label>
+                                        <select name="club" id="club" className="w-1/2 p-2 border-2 border-ocean-blue-100 rounded-md" onChange={handleFormChange}>
+                                            {allClubs.map((club) => (
+                                                <option key={club._id} value={club._id}>{club.clubName}</option>
+                                            ))}
+                                        </select>
+                                        <button type="submit" className="bg-ocean-blue-100 text-white p-2 rounded-md">Send Request</button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className='flex flex-col items-center justify-center h-full'>
+                                    <h2 className='text-3xl'>You have no clubs</h2>
+                                </div>
+                            )
                             }
-
-                            <button type="submit" className="w-1/2 h-10 bg-ocean-blue-100 text-white rounded-md mt-5">Add Club</button>
                         </form>
                     </div>
                 </div>
@@ -273,4 +244,4 @@ const handleSubmit = async (e) => {
     )
 }
 
-export default AddClub;
+export default RequestFinance;

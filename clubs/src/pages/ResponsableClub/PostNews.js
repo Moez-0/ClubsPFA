@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaChartPie, FaCcDinersClub, FaSun, FaUserCircle, FaCalendar , FaAd , FaAccessibleIcon , FaAddressCard} from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios, { all } from 'axios';
 
 
@@ -19,7 +19,8 @@ const getUserData = async (id) => {
     }
 }
 
-const ClubDashboard = () => {
+const PostNews = () => {
+    const clubId = useParams().clubId;
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -28,8 +29,20 @@ const ClubDashboard = () => {
     const [userData, setUserData] = useState(null);
     const [notifications, setNotifications] = useState([]);
     const [allClubs, setAllClubs] = useState([]);
-    
+    const [ClubNews, setClubNews] = useState([]);
+    const [formData, setFormData] = useState({
+        title: '',
+        content: '',
+        cover: '',
+    });
+    const handleChange = (e) => {
+        if (e.target.name === 'cover') {
 
+            setFormData({ ...formData, cover: '/images/'.concat(e.target.files[0]["name"]) });
+        }else{
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+    }
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -90,27 +103,45 @@ const ClubDashboard = () => {
     }
     , [userId]);
 
-
-      //get all clubs 
-      useEffect(() => {
-        const fetchClubs = async () => {
+    //get clubNews
+//get clubNews
+useEffect(() => {
+    const fetchClubNews = async () => {
+        if (clubId) {
             try {
-                const response = await axios.get('/api/club/clubs');
-  
-                if (response.data.success) {
-                    const clubs = filterClubs(userId, response.data.clubs);
-                    setAllClubs(clubs);
-        
-                   
-                }
+                const response = await axios.get(`/api/club/clubs/${clubId}/news`);
+                setClubNews(response.data.clubNews);
             } catch (error) {
-                console.error(error);
+                console.error("Error fetching club news:", error);
             }
-        };
-        fetchClubs();
-    }, [navigate,allClubs]);
+        }
+    };
 
-    
+    fetchClubNews();
+
+}, [clubId]);
+
+
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const news = {
+            title: formData.title,
+            content: formData.content,
+            cover: formData.cover,
+        }
+        try {
+            const response = await axios.put(`/api/club/clubs/${clubId}/add-news`, { news });
+
+            setClubNews([...ClubNews, news]);
+
+        } catch (error) {
+            console.error("Error posting news:", error);
+        }
+    }
+
     
     return (
 
@@ -192,38 +223,33 @@ const ClubDashboard = () => {
                         
 
                     </div>
-                    <div className='mainContent h-[80%] md:h-full '>
-                        { allClubs.length > 0 ? (
-                            <div className='flex flex-col items-center justify-center h-full'>
-
-                                <h2 className='text-3xl'>You have {allClubs.length} clubs</h2>
+                    <div className='mainContent h-[80%] md:h-full  w-full flex justify-evenly items-center'>
+                        <div className='grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 w-full m-10'>
+                            <div className='bg-white shadow-md rounded-md p-5'>
+                                <h1 className='text-3xl font-bold text-ocean-blue-100' >Post News</h1>
+                                <form className='flex flex-col space-y-5 mt-5' onSubmit={handleSubmit}>
+                                    <input type='text' name='title' placeholder='Title' className='w-full h-10 border-2  rounded-md p-5' onChange={handleChange}/>
+                                    <textarea placeholder='Content' name='content' className='w-full h-40 border-2 rounded-md p-5' onChange={handleChange}></textarea>
+                                    <input type='file' name='cover' className='w-full h-10  p-2 inline' onChange={handleChange}/>
+                                    <button className='w-full h-10 bg-ocean-blue-100 text-white rounded-md'>Post</button>
+                                </form>
                             </div>
-                        ) : (
-                            <div className='flex flex-col items-center justify-center h-full'>
-       
-                                <h2 className='text-3xl'>You have no clubs</h2>
-                            </div>
-                        )
-                        }
-
-                        { allClubs.length > 0 && (
-                            <div className='flex flex-col items-center justify-center h-full'>
-                              
-                                <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-4 p-4'>
-                    {allClubs.map((club) => (
-                        <div key={club._id} className='bg-white rounded-md p-4 flex flex-col items-center justify-center'>
-                            <h1 className='text-2xl font-bold'>{club.clubName}</h1>
-
-                            <img className='w-32 h-32 m-2' src={club.clubImage} alt={club.clubName} />
-                            <button className='w-32 h-10 m-2 p-2 bg-indigo-950 text-white rounded-md'>Edit</button>
-                            <button className='w-32 h-10 m-2 p-2 bg-red-950 text-white rounded-md'>Delete</button>
-                            <Link to={`/club-dashboard/post-news/${club._id}`} className='w-32 h-10 m-2 p-2 bg-green-950 text-white rounded-md'>Post News</Link>
-                           
+                            
                         </div>
-                    ))}
-                </div>
-                            </div>
-                        )}
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5 w-full'>
+                            {ClubNews.map((news) => {
+                                return (
+                                    <div className="bg-white
+                                    shadow-md rounded-md p-5">
+                                        <img src={news.cover} className="w-full h-50 object-cover rounded-md" alt="news" />
+                                        <h1 className="text-xl font-bold text-ocean-blue-100">{news.title}</h1>
+                                        <p className="text-gray-600">{news.content}</p>
+                                    </div>
+                                );
+                            })}
+                        
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -232,4 +258,4 @@ const ClubDashboard = () => {
     );
 }
 
-export default ClubDashboard;
+export default PostNews;

@@ -124,9 +124,11 @@ const AdminClubsList = () => {
     }
 
     //delete club 
-    const deleteClub = async (id) => {
+
+
+    const handleDeleteClub = async (id) => {
         try {
-            const response = await axios.delete(`/api/clubs/delete/${id}` , { id });
+            const response = await axios.delete(`/api/club/clubs/delete/${id}`);
             if (response.data.success) {
                 const newClubs = allStudents.filter((student) => student._id !== id);
                 setAllStudents(newClubs);
@@ -135,6 +137,7 @@ const AdminClubsList = () => {
             console.log(error);
         }
     }
+
 
     return (
 
@@ -158,7 +161,7 @@ const AdminClubsList = () => {
                     </Link>
                     </div>
                     <div className="adminSection flex flex-col items-center justify-center my-5">
-                    <Link to="/admin-dashboard/clubs" className="text-white flex items-center space-x-2 ">
+                    <Link to="/admin/admin-dashboard/clubs" className="text-white flex items-center space-x-2 ">
                         <FaAddressCard className="text-xl" />
                         <span>Request Finanical Report</span>
                     </Link>
@@ -229,7 +232,7 @@ const AdminClubsList = () => {
 
                                                 <td className='p-5'><Link to={`/admin-dashboard/clubs/${student._id}`} className='text-ocean-blue-100'>View</Link></td>
                         <td className='p-5'><Link to={`/admin-dashboard/clubs/edit/${student._id}`} className='text-ocean-blue-100'>Edit</Link></td>
-                        <td className='p-5'><button onClick={() => deleteClub(student._id)} className='text-ocean-blue-100'>Delete</button></td>
+                        <td className='p-5'><button onClick={() => handleDeleteClub(student._id)} className='text-ocean-blue-100'>Delete</button></td>
 
                     </tr>
                 ))}

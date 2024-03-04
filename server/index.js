@@ -25,7 +25,7 @@ app.listen(process.env.PORT, () => {
     }
 );
 
-app.use(cors());
+
 app.use(express.json());
 
 app.use("/api/user", userRoutes);;

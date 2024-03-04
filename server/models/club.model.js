@@ -24,7 +24,15 @@ const clubSchema = new mongoose.Schema({
     clubImage : {
         type: String,
         required: true
-    }
+    },
+    notifications : {
+        type: Array,
+        required: false
+    },
+    clubNews : {
+        type: Array,
+        required: false
+    },
 }, { timestamps: true  });
 
 

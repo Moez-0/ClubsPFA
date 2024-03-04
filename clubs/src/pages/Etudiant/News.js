@@ -51,6 +51,9 @@ const News = () => {
     axios.defaults.withCredentials = true;
     const [userId , setUserId] = useState(null);
     const [userData, setUserData] = useState(null);
+    const [userClubs, setUserClubs] = useState([]);
+    const [userNews, setUserNews] = useState([]);
+    const [userClubsIds, setUserClubsIds] = useState([]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -96,24 +99,37 @@ const News = () => {
     
         fetchUserId();
       }, []);
-    
-    //get user data
 
-       useEffect(() => {
+      useEffect(() => {
         if (userId) {
             getUserData(userId).then((user) => {
                 setUser(user);
                 setUserData(user);
+                setUserClubsIds(user.clubs);
+                console.log(user.clubs);
   
             });
         }
     }
     , [userId]);
 
+    useEffect(() => {
+        if (userClubsIds.length > 0) {
+            userClubsIds.forEach((clubId) => {
+                axios.get(`/api/club/clubs/${clubId}`).then((response) => {
+                    setUserClubs((userClubs) => [...userClubs, response.data.club]);
+                });
+            });
+        }
+    }
+    , [userClubsIds]);
 
 
-     
-     
+    const clubNews = userClubs.map((club) => {
+        return club.clubNews;
+    }
+    );
+
   
     return (
 
@@ -172,11 +188,27 @@ const News = () => {
                     </div>
                     <div className='mainContent h-[80%] md:h-full'>
                         {/* placeholders for news feed */}
-                        <div className="flex flex-col items-center justify-center h-full">
-                            <h1 className="text-4xl font-bold text-ocean-blue-100">News</h1>
-                            <p className="text-2xl text-ocean-blue-100">No news to display</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
+                            {clubNews.map((clubNews) => {
+                                return clubNews.map((news) => {
+                                    return (
+                                        <div className="bg-white
+                                        shadow-md rounded-md p-5">
+                                            <img src={news.cover} className="w-full h-50 object-cover rounded-md" alt="news" />
+                                            <h1 className="text-xl font-bold text-ocean-blue-100">{news.title}</h1>
+                                            <p className="text-gray-600">{news.content}</p>
 
-                        </div>
+
+                                            </div>
+                                    );
+
+                                }
+                                );
+                            }
+                            
+                            )}
+
+                            </div>
                     </div>
 
 

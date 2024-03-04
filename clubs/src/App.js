@@ -16,12 +16,14 @@ import ClubDashboard, {CLubDashboard} from './pages/ResponsableClub/ClubDashboar
 import StudentList from "./pages/Admin/StudentsList.js";
 import ClubCreationRequests from "./pages/Admin/ClubCreationRequests.js";
 import AdminClubsList from "./pages/Admin/AdminClubsList.js";
+import RequestFinance from "./pages/Admin/RequestFinance.js";
 import AddClub from "./pages/Admin/AddClub.js";
 import CreateClubApplication from "./pages/Etudiant/CreateClubApplication.js";
 import News from "./pages/Etudiant/News.js";
 import Events from "./pages/Etudiant/Events.js";
 import Notifications from "./pages/Etudiant/Notifications.js";
-
+import ClubMemebers from "./pages/ResponsableClub/ClubMemebers.js";
+import PostNews from "./pages/ResponsableClub/PostNews.js";
 export default function App() {
 
   return (
@@ -37,9 +39,11 @@ export default function App() {
           <Route path="student-dashboard/clubs" element={<ClubsList />} />
           <Route path="signup" element={<Signup />} />
           <Route path="login" element={<Login />} />
+          <Route path="admin" element={<AdminLogin />} />
           <Route path="admin/login" element={<AdminLogin />} />
           <Route path="admin/admin-dashboard" element={<AdminHome />} />
           <Route path="admin/admin-dashboard/students" element={<StudentList />} />
+          <Route path="admin/admin-dashboard/finance" element={<RequestFinance />} />
           <Route path="admin/admin-dashboard/clubs" element={<AdminClubsList />} />
           <Route path="admin/admin-dashboard/club-creation-requests" element={<ClubCreationRequests />} />
           <Route path="admin-dashboard/add-club" element={<AddClub />} />
@@ -49,6 +53,8 @@ export default function App() {
           <Route path="student-dashboard/create-club-application" element={<CreateClubApplication />} />
           <Route path="student-dashboard/notifications" element={<Notifications />} />
           <Route path="club-dashboard" element={<ClubDashboard   />} />
+          <Route path="club-dashboard/members" element={<ClubMemebers />} />7
+          <Route path={'club-dashboard/post-news/:clubId'} element={<PostNews />} />
 
           <Route path="*" element={<NoPage />} />
         </Route>

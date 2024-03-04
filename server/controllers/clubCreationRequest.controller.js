@@ -91,9 +91,20 @@ export const acceptClubCreationRequest = async (req, res, next) => {
         if (!clubCreationRequest) {
             return res.status(404).json({ success: false, message: 'Club creation request not found' });
         }
-        User.findById(clubCreationRequest.clubPresident).then(user => {
-            user.notifications.push({ message: 'Your club creation request has been accepted', type: 'success' });
-            user.save();
+        console.log(id,clubCreationRequest.clubPresident);
+        User.findOne({ email: clubCreationRequest.clubPresident }).then(user => {
+            if (user) {
+                user.notifications.push({ message: 'Your club creation request has been accepted', type: 'success' });
+                user.save().then(() => {
+                    // Notification added successfully
+                }).catch(error => {
+                    console.error('Error saving user after adding notification:', error);
+                });
+            } else {
+                console.error('User not found with id:', clubCreationRequest.clubPresident);
+            }
+        }).catch(error => {
+            console.error('Error finding user:', error);
         });
         clubCreationRequest.requestStatus = 'accepted';
         await clubCreationRequest.save();
@@ -103,3 +114,14 @@ export const acceptClubCreationRequest = async (req, res, next) => {
     }
 }
 
+//clear all club creation requests
+
+
+export const clearClubCreationRequests = async (req, res, next) => {
+    try {
+        await ClubCreationRequest.deleteMany();
+        res.status(200).json({ success: true, message: 'Club creation requests cleared successfully' });
+    } catch (error) {
+        next(error);
+    }
+}

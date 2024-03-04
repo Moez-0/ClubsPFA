@@ -14,7 +14,13 @@ export const createClub = async (req, res, next) => {
             clubName,
             clubDescription,
             clubAdmin,
-            clubImage
+            clubImage,
+            members: [clubAdmin],
+            notifications: [],
+            clubNews: [],
+            clubEvents: []
+
+            
         });
         res.status(201).json({ success: true, club });
     } catch (error) {
@@ -139,6 +145,76 @@ export const addMember = async (req, res, next) => {
 }
 
 
+
+
+export const sendNotification = async (req, res, next) => {
+
+    const { clubId } = req.params;
+    console.log(clubId);
+    const { notification } = req.body;
+    try {
+        const club = await Club.findById(clubId);
+        if (!club) {
+            return res.status(404).json({ success: false, message: 'Club not found' });
+        }
+        club.notifications.push(notification);
+        await club.save();
+        res.status(200).json({ success: true, club });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
+
+export const addNews = async (req, res, next) => {
+    const { clubId } = req.params;
+    const { news } = req.body;
+    try {
+        const club = await Club.findById(clubId);
+        if (!club) {
+            return res.status(404).json({ success: false, message: 'Club not found' });
+        }
+        club.clubNews.push(news);
+        await club.save();
+        res.status(200).json({ success: true, club });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
+export const addEvent = async (req, res, next) => {
+    const { clubId } = req.params;
+    const { event } = req.body;
+    try {
+        const club = await Club.findById(clubId);
+        if (!club) {
+            return res.status(404).json({ success: false, message: 'Club not found' });
+        }
+        club.clubEvents.push(event);
+        await club.save();
+        res.status(200).json({ success: true, club });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+
+
+export const getClubNews = async (req, res, next) => {
+    const { clubId } = req.params;
+    try {
+        const club = await Club.findById(clubId);
+        if (!club) {
+            return res.status(404).json({ success: false, message: 'Club not found' });
+        }
+        res.status(200).json({ success: true, clubNews: club.clubNews });
+    }
+    catch (error) {
+        next(error);
+    }
+}
 
 
 

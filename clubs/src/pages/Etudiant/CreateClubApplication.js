@@ -118,7 +118,7 @@ const CreateClubApplication = () => {
 
      const handleSubmit = async (e) => {
         
-    setFormData({...formData, clubPresident: userId});
+    setFormData({...formData, clubPresident: user.email});
         console.log(formData);
 
         e.preventDefault();
@@ -196,39 +196,39 @@ const CreateClubApplication = () => {
                         
                         <div className="flex flex-col items-center justify-center w-full">
                             <label htmlFor="clubName" className="text-ocean-blue-100">Club Name</label>
-                            <input type="text" id="clubName" name="clubName" className="w-1/2 rounded-md p-2" placeholder="Club Name" required onChange={handleChange}/>
+                            <input type="text" id="clubName" name="clubName" className="w-1/2 rounded-md p-2 border-2 rounded-md p-2" placeholder="Club Name" required onChange={handleChange}/>
                         </div>
                         <div className="flex flex-col items-center justify-center w-full mt-5">
                             <label htmlFor="clubDescription" className="text-ocean-blue-100">Club Description</label>
-                            <textarea type="text" id="clubDescription" name="clubDescription" className="w-1/2 rounded-md p-2" placeholder="Club Description" required onChange={handleChange}/>
+                            <textarea type="text" id="clubDescription" name="clubDescription" className="w-1/2 rounded-md p-2 border-2 rounded-md p-2" placeholder="Club Description" required onChange={handleChange}/>
                         </div>
                         
                         <div className="flex flex-col items-center justify-center w-full mt-5">
                             <label htmlFor="clubMission" className="text-ocean-blue-100">Club Mission</label>
-                            <textarea type="text" id="clubMission" name="clubMission" className="w-1/2 rounded-md p-2" placeholder="Club Mission" required onChange={handleChange}/>
+                            <textarea type="text" id="clubMission" name="clubMission" className="w-1/2 rounded-md p-2 border-2 rounded-md p-2" placeholder="Club Mission" required onChange={handleChange}/>
                         </div>
 
                         <div className="flex flex-col items-center justify-center w-full mt-5">
                             <label htmlFor="clubVision" className="text-ocean-blue-100">Club Vision</label>
-                            <textarea type="text" id="clubVision" name="clubVision" className="w-1/2 rounded-md p-2" placeholder="Club Vision" required onChange={handleChange}/>
+                            <textarea type="text" id="clubVision" name="clubVision" className="w-1/2 rounded-md p-2 border-2 rounded-md p-2" placeholder="Club Vision" required onChange={handleChange}/>
                         </div>
                         <div className="flex flex-col items-center justify-center w-full mt-5">
                             <label htmlFor="clubGoals" className="text-ocean-blue-100">Club Goals</label>
-                            <textarea type="text" id="clubGoals" name="clubGoals" className="w-1/2 rounded-md p-2" placeholder="Club Goals" required onChange={handleChange}/>
+                            <textarea type="text" id="clubGoals" name="clubGoals" className="w-1/2 rounded-md p-2 border-2 rounded-md p-2" placeholder="Club Goals" required onChange={handleChange}/>
                         </div>
                         <div className="flex flex-col items-center justify-center w-full mt-5">
                             <label htmlFor="clubActivities" className="text-ocean-blue-100">Club Activities</label>
-                            <textarea type="text" id="clubActivities" name="clubActivities" className="w-1/2 rounded-md p-2" placeholder="Club Activities" required onChange={handleChange}/>
+                            <textarea type="text" id="clubActivities" name="clubActivities" className="w-1/2 rounded-md p-2 border-2 rounded-md p-2" placeholder="Club Activities" required onChange={handleChange}/>
                         </div>
                         <div className="flex flex-col items-center justify-center w-full mt-5">
                             <label htmlFor="clubEvents" className="text-ocean-blue-100">Club Executives </label>
 
-                            <input type="file" id="clubExectutiveMembers" name="clubExectutiveMembers" className="w-1/2 rounded-md p-2" placeholder="Club Events" required onChange={handleChange}/>
+                            <input type="file" id="clubExectutiveMembers" name="clubExectutiveMembers" className="w-1/2 rounded-md p-2 border-2 rounded-md p-2" placeholder="Club Events" required onChange={handleChange}/>
                             
                         </div>
 
                             
-                        <button type="submit" className="bg-ocean-blue-100 text-white rounded-md p-2 mt-10 hover:bg-ocean-blue-500">Send Application</button>
+                        <button type="submit" className="bg-ocean-blue-100 text-white rounded-md p-2 mt-10 border-2 rounded-md p-2 hover:bg-ocean-blue-500">Send Application</button>
                     </form>
                       
                     </div>

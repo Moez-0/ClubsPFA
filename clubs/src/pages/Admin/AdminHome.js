@@ -121,7 +121,7 @@ const AdminHome = () => {
                     </Link>
                     </div>
                     <div className="adminSection flex flex-col items-center justify-center my-5">
-                    <Link to="/admin-dashboard/clubs" className="text-white flex items-center space-x-2 ">
+                    <Link to="/admin/admin-dashboard/finance" className="text-white flex items-center space-x-2 ">
                         <FaAddressCard className="text-xl" />
                         <span>Request Finanical Report</span>
                     </Link>

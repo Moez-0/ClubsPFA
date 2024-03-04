@@ -134,7 +134,7 @@ const StudentList = () => {
                     </Link>
                     </div>
                     <div className="adminSection flex flex-col items-center justify-center my-5">
-                    <Link to="/admin-dashboard/clubs" className="text-white flex items-center space-x-2 ">
+                    <Link to="/admin/admin-dashboard/finance" className="text-white flex items-center space-x-2 ">
                         <FaAddressCard className="text-xl" />
                         <span>Request Finanical Report</span>
                     </Link>
@@ -193,7 +193,7 @@ const StudentList = () => {
 { allStudents.length > 0 ? (
     <div className='flex flex-col items-center justify-center'>
         <table className='w-full flex flex-col justify-center items-center'>
-            <thead>
+            <thead className='w-full'>
                 <tr>
                     <th className='p-5'>Identitiy card </th>
                     <th className='p-5'>Grade</th>
@@ -203,7 +203,7 @@ const StudentList = () => {
                     <th className='p-5'>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className='w-full'>
                 {allStudents.map((student) => (
                     <tr key={student._id}>
                         <td className='p-5'>{student.identityCard}</td>

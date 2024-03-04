@@ -19,7 +19,7 @@ const getUserData = async (id) => {
     }
 }
 
-const ClubDashboard = () => {
+const ClubMemebers = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -28,7 +28,8 @@ const ClubDashboard = () => {
     const [userData, setUserData] = useState(null);
     const [notifications, setNotifications] = useState([]);
     const [allClubs, setAllClubs] = useState([]);
-    
+    const [clubMembers, setClubMembers] = useState([]);
+    const [clubMembersData, setClubMembersData] = useState([]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -100,15 +101,28 @@ const ClubDashboard = () => {
                 if (response.data.success) {
                     const clubs = filterClubs(userId, response.data.clubs);
                     setAllClubs(clubs);
-        
+                    for (let i = 0; i < clubs.length; i++) {
+                        const club = clubs[i];
+                        setClubMembers(club.clubMembers);
+                        }
+                    }
+                    //get club members data
+                    for (let i = 0; i < clubMembers.length; i++) {
+                        const member = clubMembers[i];
+                        
+                        setClubMembersData(clubMembers.push(getUserData(member)));
+                    }
+                    console.log(clubMembersData);
                    
                 }
-            } catch (error) {
-                console.error(error);
-            }
+                catch (error) {
+                    console.error(error);
+                }
+            
         };
         fetchClubs();
-    }, [navigate,allClubs]);
+    }, [navigate,allClubs,clubMembers,clubMembersData]);
+    
 
     
     
@@ -123,7 +137,7 @@ const ClubDashboard = () => {
 
 
                     <div className="clubDetailsSection flex flex-col items-center justify-center my-5 ">
-                    <Link to="/club-dashboard/details" className="text-ocean-blue-100 flex items-center space-x-2 ">
+                    <Link to="/club-dashboard/" className="text-white flex items-center space-x-2 ">
                         <FaUserCircle className="text-xl" />
                         <span >Club Details</span>
                     </Link>
@@ -135,7 +149,7 @@ const ClubDashboard = () => {
                     </Link>
                     </div>
                     <div className="clubDetailsSection flex flex-col items-center justify-center my-5">
-                    <Link to="/club-dashboard/members/" className="text-white flex items-center space-x-2 ">
+                    <Link to="/club-dashboard/members" className="text-ocean-blue-100 flex items-center space-x-2 ">
                         <FaChartPie className="text-xl" />
                         <span>Club Members</span>
                     </Link>
@@ -193,37 +207,29 @@ const ClubDashboard = () => {
 
                     </div>
                     <div className='mainContent h-[80%] md:h-full '>
-                        { allClubs.length > 0 ? (
-                            <div className='flex flex-col items-center justify-center h-full'>
+                    <div className="flex flex-col items-center justify-center">
+                        <h1 className="text-5xl text-ocean-blue-100">Club Members</h1>
 
-                                <h2 className='text-3xl'>You have {allClubs.length} clubs</h2>
+                        <div className="flex flex-col items-center justify-center">
+                            <div className="flex flex-col items-center justify-center">
+                                <h1 className="text-3xl text-ocean-blue-100">Club Members</h1>
+                                <div className="flex flex-col items-center justify-center">
+                                    {clubMembersData.map((member) => (
+                                        <div className="flex flex-col items-center justify-center">
+                                            <h1 className="text-2xl text-ocean-blue-100">{member.userName}</h1>
+                                            <h1 className="text-2xl text-ocean-blue-100">{member.userEmail}</h1>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        ) : (
-                            <div className='flex flex-col items-center justify-center h-full'>
-       
-                                <h2 className='text-3xl'>You have no clubs</h2>
-                            </div>
-                        )
-                        }
 
-                        { allClubs.length > 0 && (
-                            <div className='flex flex-col items-center justify-center h-full'>
-                              
-                                <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-4 p-4'>
-                    {allClubs.map((club) => (
-                        <div key={club._id} className='bg-white rounded-md p-4 flex flex-col items-center justify-center'>
-                            <h1 className='text-2xl font-bold'>{club.clubName}</h1>
 
-                            <img className='w-32 h-32 m-2' src={club.clubImage} alt={club.clubName} />
-                            <button className='w-32 h-10 m-2 p-2 bg-indigo-950 text-white rounded-md'>Edit</button>
-                            <button className='w-32 h-10 m-2 p-2 bg-red-950 text-white rounded-md'>Delete</button>
-                            <Link to={`/club-dashboard/post-news/${club._id}`} className='w-32 h-10 m-2 p-2 bg-green-950 text-white rounded-md'>Post News</Link>
-                           
+                        
                         </div>
-                    ))}
-                </div>
-                            </div>
-                        )}
+
+                        
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -232,4 +238,4 @@ const ClubDashboard = () => {
     );
 }
 
-export default ClubDashboard;
+export default ClubMemebers;
